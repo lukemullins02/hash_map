@@ -3,7 +3,7 @@ import LinkedList from "./linked.js";
 class HashMap {
   loadFactor = 0.75;
   capacity = 16;
-  length = 0;
+  size = 0;
 
   constructor() {
     this.arr = [];
@@ -49,9 +49,17 @@ class HashMap {
     if (this.arr[hashCode] === undefined) {
       this.arr[hashCode] = new LinkedList();
       this.arr[hashCode].append(key, value);
+      this.size++;
     } else {
       this.arr[hashCode].append(key, value);
+      this.size++;
     }
+  }
+
+  log(key) {
+    const hashCode = this.hash(key);
+
+    console.log(this.arr[hashCode].toString());
   }
 
   get(key) {
@@ -95,6 +103,52 @@ class HashMap {
 
     return false;
   }
+
+  remove(key) {
+    const hashCode = this.hash(key);
+    if (hashCode < 0 || hashCode >= this.capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (this.arr[hashCode] === undefined) {
+      throw new Error("Trying to access non-existent index");
+    }
+
+    if (this.arr[hashCode].first.key === key) {
+      this.arr[hashCode].first = this.arr[hashCode].first.nextNode;
+      this.size--;
+      return true;
+    }
+
+    let temp = this.arr[hashCode].first.nextNode;
+    let prev = this.arr[hashCode].first;
+    let node;
+
+    while (temp != null) {
+      if (key === temp.key) {
+        node = prev;
+        break;
+      }
+
+      prev = temp;
+      temp = temp.nextNode;
+    }
+
+    if (node !== undefined) {
+      let secondNode = node.nextNode;
+      node.nextNode = secondNode.nextNode;
+      secondNode.nextNode = null;
+      this.size--;
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  length() {
+    return this.size;
+  }
 }
 
 const hash = new HashMap();
@@ -102,11 +156,7 @@ const hash = new HashMap();
 hash.set(12, 7);
 hash.set("qr", 1);
 hash.set("ab", 5);
-hash.set("ab", 10);
-hash.set("qr", 2);
-hash.set(12, 100);
 
-hash.set(100, 44);
-console.log(hash.has(100));
-
+hash.set(12, 1);
+console.log(hash.length());
 export default HashMap;
