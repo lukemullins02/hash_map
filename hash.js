@@ -54,6 +54,16 @@ class HashMap {
       this.arr[hashCode].append(key, value);
       this.size++;
     }
+
+    if (this.length() === Math.ceil(this.loadFactor * this.capacity)) {
+      this.capacity = this.capacity * 2;
+      const oldArr = this.entries();
+      this.arr = [];
+
+      for (let i = 0; i < oldArr.length; i++) {
+        this.set(oldArr[i][0], oldArr[i][1]);
+      }
+    }
   }
 
   log(key) {
@@ -172,6 +182,38 @@ class HashMap {
 
     return arrKeys;
   }
+
+  values() {
+    let arrVals = [];
+
+    for (let i = 0; i < this.arr.length; i++) {
+      if (this.arr[i] !== undefined) {
+        let temp = this.arr[i].first;
+        while (temp) {
+          arrVals.push(temp.value);
+          temp = temp.nextNode;
+        }
+      }
+    }
+
+    return arrVals;
+  }
+
+  entries() {
+    let arrEntries = [];
+
+    for (let i = 0; i < this.arr.length; i++) {
+      if (this.arr[i] !== undefined) {
+        let temp = this.arr[i].first;
+        while (temp) {
+          arrEntries.push([temp.key, temp.value]);
+          temp = temp.nextNode;
+        }
+      }
+    }
+
+    return arrEntries;
+  }
 }
 
 const hash = new HashMap();
@@ -180,10 +222,18 @@ hash.set(12, 7);
 hash.set("qr", 1);
 hash.set("ab", 5);
 hash.set(120, 55);
+hash.set(130, 66);
+hash.set("Bob", 7);
+hash.set("John", 1);
+hash.set("Lol", 5);
+hash.set(77, 55);
+hash.set("Nah", 66);
+hash.set("Me", 7);
+hash.set("I", 1);
+hash.set("O", 5);
+hash.set("U", 55);
+hash.set("Joe", 66);
 
-hash.set(12, 1);
-
-const arr = hash.keys();
-console.log(arr);
+console.log(hash.get(77));
 
 export default HashMap;
