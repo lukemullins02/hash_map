@@ -22,8 +22,6 @@ class HashMap {
       hashCode = hashCode % this.capacity;
     }
 
-    console.log(hashCode);
-
     return hashCode;
   }
 
@@ -35,25 +33,15 @@ class HashMap {
     }
 
     if (this.arr[hashCode] !== undefined) {
-      if (this.arr[hashCode].first.key === key) {
-        this.arr[hashCode].first.value = value;
-        return;
-      }
-
-      let temp = this.arr[hashCode].first.nextNode;
+      let temp = this.arr[hashCode].first;
 
       if (temp != null) {
-        while (temp.nextNode != null) {
+        while (temp) {
           if (temp.key === key) {
             temp.value = value;
             return;
           }
           temp = temp.nextNode;
-        }
-
-        if (temp.key === key) {
-          temp.value = value;
-          return;
         }
       }
     }
@@ -71,6 +59,19 @@ class HashMap {
     if (hashCode < 0 || hashCode >= this.capacity) {
       throw new Error("Trying to access index out of bounds");
     }
+
+    if (this.arr[hashCode] === undefined) {
+      throw new Error("Trying to access non-existent index");
+    }
+
+    let temp = this.arr[hashCode].first;
+
+    while (temp) {
+      if (temp.key === key) {
+        return temp.value;
+      }
+      temp = temp.nextNode;
+    }
   }
 
   has(key) {
@@ -87,14 +88,15 @@ class HashMap {
 
 const hash = new HashMap();
 
-hash.set(12, 1);
+hash.set(12, 7);
 hash.set("qr", 1);
-hash.set("ab", 2);
-hash.set("ab", 3);
-hash.set("qr", 19);
-hash.set(12, 5);
+hash.set("ab", 5);
+hash.set("ab", 10);
+hash.set("qr", 2);
+hash.set(12, 100);
 
-hash.set("Luke", 1);
-hash.set("Luke", 5);
+console.log(hash.get("ab"));
+console.log(hash.get("qr"));
+console.log(hash.get(12));
 
 export default HashMap;
