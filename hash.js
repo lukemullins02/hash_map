@@ -149,6 +149,29 @@ class HashMap {
   length() {
     return this.size;
   }
+
+  clear() {
+    this.arr = [];
+    this.capacity = 16;
+
+    return this.arr;
+  }
+
+  keys() {
+    let arrKeys = [];
+
+    for (let i = 0; i < this.arr.length; i++) {
+      if (this.arr[i] !== undefined) {
+        let temp = this.arr[i].first;
+        while (temp) {
+          arrKeys.push(temp.key);
+          temp = temp.nextNode;
+        }
+      }
+    }
+
+    return arrKeys;
+  }
 }
 
 const hash = new HashMap();
@@ -156,7 +179,11 @@ const hash = new HashMap();
 hash.set(12, 7);
 hash.set("qr", 1);
 hash.set("ab", 5);
+hash.set(120, 55);
 
 hash.set(12, 1);
-console.log(hash.length());
+
+const arr = hash.keys();
+console.log(arr);
+
 export default HashMap;
