@@ -55,21 +55,16 @@ class HashMap {
       this.size++;
     }
 
-    if (this.length() === Math.ceil(this.loadFactor * this.capacity)) {
+    if (this.length() === this.loadFactor * this.capacity + 1) {
       this.capacity = this.capacity * 2;
       const oldArr = this.entries();
       this.arr = [];
+      this.size = 0;
 
       for (let i = 0; i < oldArr.length; i++) {
         this.set(oldArr[i][0], oldArr[i][1]);
       }
     }
-  }
-
-  log(key) {
-    const hashCode = this.hash(key);
-
-    console.log(this.arr[hashCode].toString());
   }
 
   get(key) {
@@ -216,24 +211,17 @@ class HashMap {
   }
 }
 
-const hash = new HashMap();
-
-hash.set(12, 7);
-hash.set("qr", 1);
-hash.set("ab", 5);
-hash.set(120, 55);
-hash.set(130, 66);
-hash.set("Bob", 7);
-hash.set("John", 1);
-hash.set("Lol", 5);
-hash.set(77, 55);
-hash.set("Nah", 66);
-hash.set("Me", 7);
-hash.set("I", 1);
-hash.set("O", 5);
-hash.set("U", 55);
-hash.set("Joe", 66);
-
-console.log(hash.get(77));
-
-export default HashMap;
+const test = new HashMap();
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+test.set("moon", "silver");
