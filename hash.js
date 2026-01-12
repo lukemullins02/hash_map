@@ -75,14 +75,25 @@ class HashMap {
   }
 
   has(key) {
-    if (key < 0 || key >= this.capacity) {
+    const hashCode = this.hash(key);
+    if (hashCode < 0 || hashCode >= this.capacity) {
       throw new Error("Trying to access index out of bounds");
     }
-    if (this.arr[key] !== undefined) {
-      return true;
-    } else {
-      return false;
+
+    if (this.arr[hashCode] === undefined) {
+      throw new Error("Trying to access non-existent index");
     }
+
+    let temp = this.arr[hashCode].first;
+
+    while (temp) {
+      if (temp.key === key) {
+        return true;
+      }
+      temp = temp.nextNode;
+    }
+
+    return false;
   }
 }
 
@@ -95,8 +106,7 @@ hash.set("ab", 10);
 hash.set("qr", 2);
 hash.set(12, 100);
 
-console.log(hash.get("ab"));
-console.log(hash.get("qr"));
-console.log(hash.get(12));
+hash.set(100, 44);
+console.log(hash.has(100));
 
 export default HashMap;
